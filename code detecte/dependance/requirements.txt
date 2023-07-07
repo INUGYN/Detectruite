@@ -1,5 +1,6 @@
 cx-Freeze
 opencv-python
+openpyxl
 numpy
 pandas
 pillow
