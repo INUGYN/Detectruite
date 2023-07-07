@@ -31,13 +31,8 @@ def on_button1_click():
     path = filedialog.askopenfilename(filetypes=[("Fichiers vidéo", "*.mp4;*.avi")])
     open_video(path) #Ouverture du chemin de la vidéo
 
-#Fonction de gestion du bouton n°2
-def on_button2_click():
-    exec(open(f'{repertoire}/Pick_Color.py').read())
-
 #Création des fenêtres
 window1 = tk.Tk()
-window2 = None
 
 #Ajoute la fenêtre à la liste
 windows = [window1]
@@ -73,7 +68,7 @@ style.configure("TButton",
                 font=("Arial", 12),  # Police du texte
                 width=10,  # Largeur du bouton
                 foreground="black",  # Couleur du texte
-                background="#00ffff",  # Couleur de fond
+                background="#00FFFF",  # Couleur de fond
                 padding=10,  # Espacement interne
                 )
 
@@ -82,7 +77,7 @@ frame = ttk.Frame(window1)
 
 #Chargement de l'image pour le background (style)
 background_but = Image.open(f"{repertoire}/image/R.jpg")
-background_but = background_but.resize((360, 150))
+background_but = background_but.resize((150, 100))
 background_button = ImageTk.PhotoImage(background_but)
 
 #Widget pour afficher l'image en background
@@ -95,11 +90,9 @@ title_label.grid(row=0, column=0, columnspan=3, pady=(50, 10))
 
 #Création des boutons
 button1 = ttk.Button(frame, text="Vidéo", command=on_button1_click)
-button2 = ttk.Button(frame, text="Testeur", command=on_button2_click)
 
 #Centrer les boutons horizontalement
-button1.grid(row=1, column=0, padx=10)
-button2.grid(row=1, column=1, padx=10)
+button1.grid(row=1, column=0, padx=0)
 
 #Centrer le cadre dans la fenêtre
 frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
@@ -116,30 +109,174 @@ if path == "":
 
 print("Chemin de la vidéo sélectionnée :", path)
 
+
+#Capture de la vidéo
+cap1 = cv2.VideoCapture(path)
+def nothing(x):
+    pass
+
+conf_green = "Configuration Bac Vert"
+cv2.namedWindow(conf_green)
+cv2.createTrackbar("L - H", conf_green, 0, 179, nothing)
+cv2.createTrackbar("L - S", conf_green, 0, 255, nothing)
+cv2.createTrackbar("L - V", conf_green, 0, 255, nothing)
+cv2.createTrackbar("U - H", conf_green, 179, 179, nothing)
+cv2.createTrackbar("U - S", conf_green, 255, 255, nothing)
+cv2.createTrackbar("U - V", conf_green, 255, 255, nothing)
+
+while True:
+    ret, frame = cap1.read()
+    frame = cv2.resize(frame, (640, 480))
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    l_h = cv2.getTrackbarPos("L - H", conf_green)
+    l_s = cv2.getTrackbarPos("L - S", conf_green)
+    l_v = cv2.getTrackbarPos("L - V", conf_green)
+    u_h = cv2.getTrackbarPos("U - H", conf_green)
+    u_s = cv2.getTrackbarPos("U - S", conf_green)
+    u_v = cv2.getTrackbarPos("U - V", conf_green)
+    lower = np.array([l_h, l_s, l_v])
+    upper = np.array([u_h, u_s, u_v])
+    mask = cv2.inRange(hsv, lower, upper)
+    result = cv2.bitwise_and(frame, frame, mask=mask)
+    # show thresholded image
+    cv2.imshow("Mask Bac Vert", mask)
+    cv2.imshow("Bac Vert", result)
+    lower_range_green = lower 
+    upper_range_green = upper
+    key = cv2.waitKey(1) & 0xFF
+    if key == 27:
+        break
+
+
+cap1.release()
+cv2.destroyAllWindows()
+
+conf_blue = "Configuration Bac Bleu"
+cv2.namedWindow(conf_blue)
+cv2.createTrackbar("L - H", conf_blue, 0, 179, nothing)
+cv2.createTrackbar("L - S", conf_blue, 0, 255, nothing)
+cv2.createTrackbar("L - V", conf_blue, 0, 255, nothing)
+cv2.createTrackbar("U - H", conf_blue, 179, 179, nothing)
+cv2.createTrackbar("U - S", conf_blue, 255, 255, nothing)
+cv2.createTrackbar("U - V", conf_blue, 255, 255, nothing)
+
+cap2 = cv2.VideoCapture(path)
+while True:
+    ret, frame = cap2.read()
+    frame = cv2.resize(frame, (640, 480))
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    l_h2 = cv2.getTrackbarPos("L - H", conf_blue)
+    l_s2 = cv2.getTrackbarPos("L - S", conf_blue)
+    l_v2 = cv2.getTrackbarPos("L - V", conf_blue)
+    u_h2 = cv2.getTrackbarPos("U - H", conf_blue)
+    u_s2 = cv2.getTrackbarPos("U - S", conf_blue)
+    u_v2 = cv2.getTrackbarPos("U - V", conf_blue)
+    lower = np.array([l_h2, l_s2, l_v2])
+    upper = np.array([u_h2, u_s2, u_v2])
+    mask = cv2.inRange(hsv, lower, upper)
+    result = cv2.bitwise_and(frame, frame, mask=mask)
+    # show thresholded image
+    cv2.imshow("Mask Bac Bleu", mask)
+    cv2.imshow("Bac Bleu", result)
+    lower_range_blue = lower 
+    upper_range_blue = upper
+    key = cv2.waitKey(1) & 0xFF
+    if key == 27:
+        break
+
+
+cap2.release()
+cv2.destroyAllWindows()
+
+conf_yellow = "Configuration Bac Jaune"
+cv2.namedWindow(conf_yellow)
+cv2.createTrackbar("L - H", conf_yellow, 0, 179, nothing)
+cv2.createTrackbar("L - S", conf_yellow, 0, 255, nothing)
+cv2.createTrackbar("L - V", conf_yellow, 0, 255, nothing)
+cv2.createTrackbar("U - H", conf_yellow, 179, 179, nothing)
+cv2.createTrackbar("U - S", conf_yellow, 255, 255, nothing)
+cv2.createTrackbar("U - V", conf_yellow, 255, 255, nothing)
+
+cap3 = cv2.VideoCapture(path)
+while True:
+    ret, frame = cap3.read()
+    frame = cv2.resize(frame, (640, 480))
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    l_h3 = cv2.getTrackbarPos("L - H", conf_yellow)
+    l_s3 = cv2.getTrackbarPos("L - S", conf_yellow)
+    l_v3 = cv2.getTrackbarPos("L - V", conf_yellow)
+    u_h3 = cv2.getTrackbarPos("U - H", conf_yellow)
+    u_s3 = cv2.getTrackbarPos("U - S", conf_yellow)
+    u_v3 = cv2.getTrackbarPos("U - V", conf_yellow)
+    lower = np.array([l_h3, l_s3, l_v3])
+    upper = np.array([u_h3, u_s3, u_v3])
+    mask = cv2.inRange(hsv, lower, upper)
+    result = cv2.bitwise_and(frame, frame, mask=mask)
+    # show thresholded image
+    cv2.imshow("Mask Bac Jaune", mask)
+    cv2.imshow("Bac Jaune", result)
+    lower_range_yellow = lower 
+    upper_range_yellow = upper
+    key = cv2.waitKey(1) & 0xFF
+    if key == 27:
+        break
+
+
+cap3.release()
+cv2.destroyAllWindows()
+
+conf_fish = "Configuration Des Poissons"
+cv2.namedWindow(conf_fish)
+cv2.createTrackbar("L - H", conf_fish, 0, 179, nothing)
+cv2.createTrackbar("L - S", conf_fish, 0, 255, nothing)
+cv2.createTrackbar("L - V", conf_fish, 0, 255, nothing)
+cv2.createTrackbar("U - H", conf_fish, 179, 179, nothing)
+cv2.createTrackbar("U - S", conf_fish, 255, 255, nothing)
+cv2.createTrackbar("U - V", conf_fish, 255, 255, nothing)
+
+cap4 = cv2.VideoCapture(path)
+while True:
+    ret, frame = cap4.read()
+    frame = cv2.resize(frame, (640, 480))
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    l_h4 = cv2.getTrackbarPos("L - H", conf_fish)
+    l_s4 = cv2.getTrackbarPos("L - S", conf_fish)
+    l_v4 = cv2.getTrackbarPos("L - V", conf_fish)
+    u_h4 = cv2.getTrackbarPos("U - H", conf_fish)
+    u_s4 = cv2.getTrackbarPos("U - S", conf_fish)
+    u_v4 = cv2.getTrackbarPos("U - V", conf_fish)
+    lower = np.array([l_h4, l_s4, l_v4])
+    upper = np.array([u_h4, u_s4, u_v4])
+    mask = cv2.inRange(hsv, lower, upper)
+    result = cv2.bitwise_and(frame, frame, mask=mask)
+    # show thresholded image
+    cv2.imshow("Mask Poisson", mask)
+    cv2.imshow("Les Poissons", result)
+    lower_fish = lower 
+    upper_fish = upper
+    key = cv2.waitKey(1) & 0xFF
+    if key == 27:
+        break
+
+
+cap3.release()
+cv2.destroyAllWindows()
+
 #Capture de la vidéo
 cap = cv2.VideoCapture(path)
-
-###Initialisation des plages de couleurs en HSV###
-lower_range_blue = np.array([107, 113, 121])
-upper_range_blue = np.array([114, 179, 198])
-
-lower_range_green = np.array([46, 101, 88])
-upper_range_green = np.array([99, 206, 118])
-
-lower_range_yellow = np.array([0, 121, 116])
-upper_range_yellow = np.array([44, 255, 255])
-
-lower_fish = np.array([0, 0, 0])
-upper_fish = np.array([179, 255, 76])
 #####
 
 #Détection et traitement du bleu
 def blue(img):
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(image, lower_fish, upper_fish)
-    image = cv2.blur(image, (7, 7))
-    mask = cv2.erode(mask, None, iterations=4)
-    mask = cv2.dilate(mask, None, iterations=4)
+    #image = cv2.blur(image, (7, 7))
+    #mask = cv2.erode(mask, None, iterations=4)
+    #mask = cv2.dilate(mask, None, iterations=4)
     image2 = cv2.bitwise_and(frame, frame, mask=mask)
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -161,7 +298,7 @@ def blue(img):
 
     for contour in contours:
         ((x, y), rayon) = cv2.minEnclosingCircle(contour)
-        if rayon > 50 and x > x_min and x < x_max and y > y_min and y < y_max:
+        if rayon > 25 and x > x_min and x < x_max and y > y_min and y < y_max:
             fish_positions2.append((x, y))
 
     #Limiter le nombre de poissons détectés au nombre spécifié
@@ -184,16 +321,16 @@ def blue(img):
 
 
         prev_positions.append(position)
-        cv2.imshow('Poisson', image2)
+        cv2.imshow('Poisson Bleu', image2)
         #cv2.imshow('Bac bleu', mask2)
     
 #Détection et traitement du vert
 def green(img):
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(image, lower_fish, upper_fish)
-    image = cv2.blur(image, (7, 7))
-    mask = cv2.erode(mask, None, iterations=4)
-    mask = cv2.dilate(mask, None, iterations=4)
+    #image = cv2.blur(image, (7, 7))
+    #mask = cv2.erode(mask, None, iterations=4)
+    #mask = cv2.dilate(mask, None, iterations=4)
     image2 = cv2.bitwise_and(frame, frame, mask=mask)
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -215,7 +352,7 @@ def green(img):
 
     for contour in contours:
         ((x, y), rayon) = cv2.minEnclosingCircle(contour)
-        if rayon > 50 and x > x_min and x < x_max and y > y_min and y < y_max:
+        if rayon > 25 and x > x_min and x < x_max and y > y_min and y < y_max:
             fish_positions2.append((x, y))
 
     #Limiter le nombre de poissons détectés au nombre spécifié
@@ -238,16 +375,16 @@ def green(img):
 
 
         prev_positions2.append(position)
-        cv2.imshow('Poisson', image2)
+        cv2.imshow('Poisson Vert', image2)
         #cv2.imshow('Bac Vert', mask2)
 
 #Détection et traitement du jaune
 def yellow(img):
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(image, lower_fish, upper_fish)
-    image = cv2.blur(image, (7, 7))
-    mask = cv2.erode(mask, None, iterations=4)
-    mask = cv2.dilate(mask, None, iterations=4)
+    #image = cv2.blur(image, (7, 7))
+    #mask = cv2.erode(mask, None, iterations=4)
+    #mask = cv2.dilate(mask, None, iterations=4)
     image2 = cv2.bitwise_and(frame, frame, mask=mask)
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -269,7 +406,7 @@ def yellow(img):
 
     for contour in contours:
         ((x, y), rayon) = cv2.minEnclosingCircle(contour)
-        if rayon > 50 and x > x_min and x < x_max and y > y_min and y < y_max:
+        if rayon > 25 and x > x_min and x < x_max and y > y_min and y < y_max:
             fish_positions3.append((x, y))
 
     #Limiter le nombre de poissons détectés au nombre spécifié
@@ -292,7 +429,7 @@ def yellow(img):
 
 
         prev_positions3.append(position)
-        cv2.imshow('Poisson', image2)
+        cv2.imshow('Poisson Jaune', image2)
         #cv2.imshow('Bac jaune', mask2)
 
 #Listes pour stocker les vitesses des poissons de chaque bac
