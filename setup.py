@@ -32,7 +32,7 @@ options = {
 # Création de l'installation
 setup(
     name="Détéctruite",
-    version="1.1",
+    version="1.5",
     executables=[exe],
     options=options,
 )
