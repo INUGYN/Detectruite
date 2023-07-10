@@ -298,7 +298,7 @@ def blue(img):
 
     for contour in contours:
         ((x, y), rayon) = cv2.minEnclosingCircle(contour)
-        if rayon > 25 and x > x_min and x < x_max and y > y_min and y < y_max:
+        if rayon > 30 and x > x_min and x < x_max and y > y_min and y < y_max:
             fish_positions2.append((x, y))
 
     #Limiter le nombre de poissons détectés au nombre spécifié
@@ -317,7 +317,7 @@ def blue(img):
             elapsed_time = time.time() - start_time
 
             fish_speed = distance_pixels / elapsed_time
-            fish_speeds.append(fish_speed)
+            fish_speeds.append(fish_speed / 3779.5)
 
 
         prev_positions.append(position)
@@ -371,7 +371,7 @@ def green(img):
             elapsed_time = time.time() - start_time
 
             fish_speed = distance_pixels / elapsed_time
-            fish_speeds2.append(fish_speed)
+            fish_speeds2.append(fish_speed / 3779.5)
 
 
         prev_positions2.append(position)
@@ -425,7 +425,7 @@ def yellow(img):
             elapsed_time = time.time() - start_time
 
             fish_speed = distance_pixels / elapsed_time
-            fish_speeds3.append(fish_speed)
+            fish_speeds3.append(fish_speed / 3779.5)
 
 
         prev_positions3.append(position)
@@ -554,6 +554,7 @@ v_max_yellow = max(fish_speeds3)
 stress_types1 = []
 
 #BLEU#
+print(v_max_blue)
 #Calcul du pourcentage de stress bleu
 stress_fort1 = len([v for v in fish_speeds if v >= 0.6 * v_max_blue]) #Supérieur ou égale à 60% de vitesse max
 stress_moyen1 = len([v for v in fish_speeds if 0.4 * v_max_blue <= v < 0.6 * v_max_blue]) #Compris entre 40% et 60% strictement
