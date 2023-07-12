@@ -317,6 +317,10 @@ def blue(img):
             elapsed_time = time.time() - start_time
 
             fish_speed = distance_pixels / elapsed_time
+
+            # Convertion en cm pour les valeurs de vitesse
+            fish_speed = fish_speed * 100
+
             fish_speeds.append(fish_speed / 3779.5)
 
 
@@ -352,7 +356,7 @@ def green(img):
 
     for contour in contours:
         ((x, y), rayon) = cv2.minEnclosingCircle(contour)
-        if rayon > 25 and x > x_min and x < x_max and y > y_min and y < y_max:
+        if rayon > 30 and x > x_min and x < x_max and y > y_min and y < y_max:
             fish_positions2.append((x, y))
 
     #Limiter le nombre de poissons détectés au nombre spécifié
@@ -371,6 +375,10 @@ def green(img):
             elapsed_time = time.time() - start_time
 
             fish_speed = distance_pixels / elapsed_time
+
+            # Convertion en cm pour les valeurs de vitesse
+            fish_speed = fish_speed * 100
+            
             fish_speeds2.append(fish_speed / 3779.5)
 
 
@@ -406,7 +414,7 @@ def yellow(img):
 
     for contour in contours:
         ((x, y), rayon) = cv2.minEnclosingCircle(contour)
-        if rayon > 25 and x > x_min and x < x_max and y > y_min and y < y_max:
+        if rayon > 30 and x > x_min and x < x_max and y > y_min and y < y_max:
             fish_positions3.append((x, y))
 
     #Limiter le nombre de poissons détectés au nombre spécifié
@@ -425,6 +433,10 @@ def yellow(img):
             elapsed_time = time.time() - start_time
 
             fish_speed = distance_pixels / elapsed_time
+
+            # Convertion en cm pour les valeurs de vitesse
+            fish_speed = fish_speed * 100
+
             fish_speeds3.append(fish_speed / 3779.5)
 
 
@@ -507,7 +519,7 @@ ax3 = fig.add_subplot(325) #Affichage en 3 lignes, 2 colonnes, position 5
 plt.subplot(3, 2, 1)
 plt.plot(fish_speeds)
 plt.xlabel("Temps (min)") #Abscisses
-plt.ylabel("Vitesse (m/s)") #Ordonnées
+plt.ylabel("Vitesse (cm/s)") #Ordonnées
 plt.title("Graphique des vitesses Bac Bleu") #Titre
 plt.grid(True, color="grey") #Quadrillage
 ax1.plot(fish_speeds, color='#00FFFF') #Couleur du graphique associée à celle du bac
@@ -520,7 +532,7 @@ plt.xlim(0, elapsed_time)
 plt.subplot(3, 2, 3)
 plt.plot(fish_speeds2)
 plt.xlabel("Temps (min)") #Abscisses
-plt.ylabel("Vitesse (m/s)") #Ordonnées
+plt.ylabel("Vitesse (cm/s)") #Ordonnées
 plt.title("Graphique des vitesses Bac Vert") #Titre
 plt.grid(True, color="grey") #Quadrillage
 ax2.plot(fish_speeds2, color='#00FF00') #Couleur du graphique associée à celle du bac
@@ -533,7 +545,7 @@ plt.xlim(0, elapsed_time)
 plt.subplot(3, 2, 5)
 plt.plot(fish_speeds3)
 plt.xlabel("Temps (min)") #Abscisses
-plt.ylabel("Vitesse (m/s)") #Ordonnées
+plt.ylabel("Vitesse (cm/s)") #Ordonnées
 plt.title("Graphique des vitesses Bac Jaune") #Titre
 plt.grid(True, color="grey") #Quadrillage
 ax3.plot(fish_speeds3, color='#FFFF00') #Couleur du graphique associée à celle du bac
@@ -554,7 +566,6 @@ v_max_yellow = max(fish_speeds3)
 stress_types1 = []
 
 #BLEU#
-print(v_max_blue)
 #Calcul du pourcentage de stress bleu
 stress_fort1 = len([v for v in fish_speeds if v >= 0.6 * v_max_blue]) #Supérieur ou égale à 60% de vitesse max
 stress_moyen1 = len([v for v in fish_speeds if 0.4 * v_max_blue <= v < 0.6 * v_max_blue]) #Compris entre 40% et 60% strictement
@@ -644,7 +655,7 @@ plt.show()
 elapsed_time = math.ceil(elapsed_time)
 
 #Définition de la variable de temps avec une séquence de temps
-times = list(range(0, elapsed_time + 1, 1))  #Intervalles de 1 seconde
+times = np.arange(0, elapsed_time + 0.2, 0.2).tolist()  #Intervalles de 1 seconde
 
 #Assurer que les tableaux de données ont la même longueur
 length = min(len(times), len(fish_speeds), len(fish_speeds2), len(fish_speeds3))
@@ -652,11 +663,6 @@ times = times[:length]
 fish_speeds = fish_speeds[:length]
 fish_speeds2 = fish_speeds2[:length]
 fish_speeds3 = fish_speeds3[:length]
-
-#Arrondir les valeurs à 10^-3
-fish_speeds = [round(speed, 3) for speed in fish_speeds]
-fish_speeds2 = [round(speed, 3) for speed in fish_speeds2]
-fish_speeds3 = [round(speed, 3) for speed in fish_speeds3]
 
 interval_duration = 30  # Durée de l'intervalle en secondes
 
@@ -667,11 +673,6 @@ avg_speeds_blue = [sum(fish_speeds[max(0, i - interval_duration):i]) / min(i, in
 avg_speeds_green = [sum(fish_speeds2[max(0, i - interval_duration):i]) / min(i, interval_duration) if i != 0 else 0 for i in interval_times]
 avg_speeds_yellow = [sum(fish_speeds3[max(0, i - interval_duration):i]) / min(i, interval_duration) if i != 0 else 0 for i in interval_times]
 
-
-#Arrondir les valeurs à 10^-3
-avg_speeds_blue = [round(speed, 3) for speed in avg_speeds_blue]
-avg_speeds_green = [round(speed, 3) for speed in avg_speeds_green]
-avg_speeds_yellow = [round(speed, 3) for speed in avg_speeds_yellow]
 
 #Liste vide avec la même longueur que times pour exportation
 empty = [""] * len(times)
@@ -688,29 +689,24 @@ avg_speeds_yellow = avg_speeds_yellow[1:]
 data = {
     'Temps': times,  # Valeurs de temps
     '': empty,
-    'Vitesse bleu (m/s)': fish_speeds,  # Vitesse du bac bleu
-    'Vitesse vert (m/s)': fish_speeds2,  # Vitesse du bac vert
-    'Vitesse jaune (m/s)': fish_speeds3,  # Vitesse du bac jaune
+    'Vitesse bleu (cm/s)': fish_speeds,  # Vitesse du bac bleu
+    'Vitesse vert (cm/s)': fish_speeds2,  # Vitesse du bac vert
+    'Vitesse jaune (cm/s)': fish_speeds3,  # Vitesse du bac jaune
 }
 
 # Créer un dictionnaire des données
 data2 = {
     'Temps': interval_times,  # Intervalle de temps (0, 30, 60, etc.)
     '': empty2,
-    'Moyenne Vitesse Bac Bleu (m/s)': avg_speeds_blue,  # Vitesse moyenne des 30 dernières secondes
-    'Moyenne Vitesse Bac Vert (m/s)': avg_speeds_green,
-    'Moyenne Vitesse Bac Jaune (m/s)': avg_speeds_yellow
+    'Moyenne Vitesse Bac Bleu (cm/s)': avg_speeds_blue,  # Vitesse moyenne des 30 dernières secondes
+    'Moyenne Vitesse Bac Vert (cm/s)': avg_speeds_green,
+    'Moyenne Vitesse Bac Jaune (cm/s)': avg_speeds_yellow
 }
 
-# Arrondir les valeurs à 10^-3
-v_max_blue = round(v_max_blue, 3)
-v_max_green = round(v_max_green, 3)
-v_max_yellow = round(v_max_yellow, 3)
-
 data3 = {
-    'Vitesse Max Bac Bleu (m/s)': [v_max_blue],  # Vitesse max
-    'Vitesse Max Bac Vert (m/s)': [v_max_green],
-    'Vitesse Max Bac Jaune  (m/s)': [v_max_yellow]
+    'Vitesse Max Bac Bleu (cm/s)': [v_max_blue],  # Vitesse max
+    'Vitesse Max Bac Vert (cm/s)': [v_max_green],
+    'Vitesse Max Bac Jaune  (cm/s)': [v_max_yellow]
 }
 
 
