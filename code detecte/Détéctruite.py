@@ -3,6 +3,9 @@ import os
 import cv2
 import time
 import math
+import winsound
+import requests
+import webbrowser
 import numpy as np
 import pandas as pd
 import tkinter as tk
@@ -11,10 +14,84 @@ import matplotlib.pyplot as plt
 from tkinter import ttk, filedialog
 ########
 
+# Version actuellement installée
+version_installee = "v" + "1.5.0"  # Remplacez par la version installée sur votre système
+
 #Création d'une variable redirigeant vers le répertoire
 repertoire = os.path.dirname(os.path.abspath(__file__))
 repertoire = os.path.normpath(repertoire)
 
+def maj_test():
+    # URL de votre référentiel GitHub
+    github_repo_api = 'https://api.github.com/repos/INUGYN/Detectruite'
+
+    # Obtenir les informations des releases du référentiel
+    releases_api = f"{github_repo_api}/releases"
+    response = requests.get(releases_api)
+    def maj():
+        winsound.PlaySound(f'{repertoire}/dependance/event/update_sound.wav', winsound.SND_FILENAME)
+        # Fonction appelée lorsque le bouton de mise à jour est cliqué
+        def update_button_click():
+            webbrowser.open(latest_version_url)
+            exit()
+
+        # Fonction appelée lorsque le bouton Ignorer est cliqué
+        def ignore_button_click():
+            window.destroy()
+
+        # Création de la fenêtre
+        window = tk.Tk()
+        window.title("Mise à jour")
+        window.iconbitmap(f"{repertoire}/image/truite.ico")
+
+        # Obtention des dimensions de l'écran
+        screen_width = window.winfo_screenwidth()
+        screen_height = window.winfo_screenheight()
+        
+        # Dimensions de la fenêtre
+        window_width = 400
+        window_height = 200
+        
+        # Calcul des coordonnées pour centrer la fenêtre
+        x = int(screen_width / 2 - window_width / 2)
+        y = int(screen_height / 2 - window_height / 2)
+        
+        # Positionnement de la fenêtre au centre de l'écran
+        window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+        # Texte indiquant qu'il y a une mise à jour
+        text_label = tk.Label(window, text=f"La version v{latest_version} est disponible !", font=("Arial", 14))
+        text_label.pack(pady=20)
+
+        # Bouton de mise à jour
+        update_button = tk.Button(window, text="Mettre à jour", font=("Arial", 12), command=update_button_click)
+        update_button.pack(pady=10)
+
+        # Bouton Ignorer
+        ignore_button = tk.Button(window, text="Ignorer", font=("Arial", 12), command=ignore_button_click)
+        ignore_button.pack(pady=10)
+
+        # Boucle principale de la fenêtre
+        window.mainloop()
+
+
+    if response.status_code == 200:
+        releases = response.json()
+        if releases:
+            latest_release = releases[0]
+            latest_version = latest_release['tag_name']
+            latest_version_url = latest_release['html_url']
+
+            if latest_version != version_installee:
+                maj()
+            else:
+                print("Votre version est à jour.")
+        else:
+            print("Aucune release disponible pour ce référentiel.")
+    else:
+        print("Erreur lors de la récupération des informations des releases (Code de statut :", response.status_code, ")")
+
+maj_test()
 path = ""
 video_choice = ""
 
@@ -97,6 +174,11 @@ button1.grid(row=1, column=0, padx=0)
 #Centrer le cadre dans la fenêtre
 frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
+# Création du widget Label pour le texte
+label = tk.Label(window1, text=version_installee)
+
+# Positionnement en bas à gauche en utilisant la méthode pack
+label.pack(anchor='sw', padx=10, pady=10)
 #Changer le titre de la fenêtre
 window1.title("Détéctruite")
 window1.iconbitmap(f"{repertoire}/image/truite.ico")
@@ -139,6 +221,9 @@ while True:
     upper = np.array([u_h, u_s, u_v])
     mask = cv2.inRange(hsv, lower, upper)
     result = cv2.bitwise_and(frame, frame, mask=mask)
+
+    cv2.putText(result, "Appuyez sur 'Echap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+
     # show thresholded image
     cv2.imshow("Mask Bac Vert", mask)
     cv2.imshow("Bac Vert", result)
@@ -177,6 +262,9 @@ while True:
     upper = np.array([u_h2, u_s2, u_v2])
     mask = cv2.inRange(hsv, lower, upper)
     result = cv2.bitwise_and(frame, frame, mask=mask)
+
+    cv2.putText(result, "Appuyez sur 'Echap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 0), 2)
+
     # show thresholded image
     cv2.imshow("Mask Bac Bleu", mask)
     cv2.imshow("Bac Bleu", result)
@@ -215,6 +303,9 @@ while True:
     upper = np.array([u_h3, u_s3, u_v3])
     mask = cv2.inRange(hsv, lower, upper)
     result = cv2.bitwise_and(frame, frame, mask=mask)
+
+    cv2.putText(result, "Appuyez sur 'Echap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
+
     # show thresholded image
     cv2.imshow("Mask Bac Jaune", mask)
     cv2.imshow("Bac Jaune", result)
@@ -253,6 +344,9 @@ while True:
     upper = np.array([u_h4, u_s4, u_v4])
     mask = cv2.inRange(hsv, lower, upper)
     result = cv2.bitwise_and(frame, frame, mask=mask)
+
+    cv2.putText(result, "Appuyez sur 'Echap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 70, 140), 2)
+
     # show thresholded image
     cv2.imshow("Mask Poisson", mask)
     cv2.imshow("Les Poissons", result)
