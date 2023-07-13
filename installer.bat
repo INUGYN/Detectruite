@@ -6,6 +6,8 @@ cd %repertoire%/code detecte/dependance
 
 python -m pip install requests
 
+pip install pyshortcuts
+
 pip install -r requirements.txt
 
 cd ..
