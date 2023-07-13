@@ -9,4 +9,3 @@ plyer
 pyshortcuts
 pyWebBrowser
 winsound
-requests
