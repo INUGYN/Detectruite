@@ -1,3 +1,4 @@
+requests
 cx-Freeze
 opencv-python
 numpy
@@ -6,6 +7,6 @@ pillow
 matplotlib
 plyer
 pyshortcuts
-requests
 pyWebBrowser
 winsound
+requests
