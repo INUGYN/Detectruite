@@ -7,7 +7,7 @@ repertoire = os.path.dirname(os.path.abspath(__file__))
 repertoire = os.path.normpath(repertoire)
 
 # Chemin vers le script Python
-script = f"{repertoire}/code detecte/Détéctruite.py"
+script = f"{repertoire}/code detecte/Détectruite.py"
 
 
 icon = f"{repertoire}/code detecte/image/truite.ico"
@@ -31,16 +31,16 @@ options = {
 
 # Création de l'installation
 setup(
-    name="Détéctruite",
+    name="Détectruite",
     executables=[exe],
     options=options,
 )
 
 # Chemin vers le fichier exécutable généré
-executable_path = os.path.join(f"{repertoire}/build/Détéctruite.exe")
+executable_path = os.path.join(f"{repertoire}/build/Détectruite.exe")
 
 # Chemin vers le bureau
 desktop_path = Path.home() / "Desktop"
 
 # Création du raccourci sur le bureau
-pyshortcuts.make_shortcut(executable_path, name="Détéctruite", folder=str(desktop_path), icon=icon)
+pyshortcuts.make_shortcut(executable_path, name="Détectruite", folder=str(desktop_path), icon=icon)
