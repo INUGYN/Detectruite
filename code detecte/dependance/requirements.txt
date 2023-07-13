@@ -1,9 +1,11 @@
 cx-Freeze
 opencv-python
-openpyxl
 numpy
 pandas
 pillow
 matplotlib
 plyer
 pyshortcuts
+requests
+pyWebBrowser
+winsound
