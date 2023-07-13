@@ -32,7 +32,7 @@ def maj_test():
         winsound.PlaySound(f'{repertoire}/dependance/event/update_sound.wav', winsound.SND_FILENAME)
         # Fonction appelée lorsque le bouton de mise à jour est cliqué
         def update_button_click():
-            webbrowser.open(latest_version_url)
+            webbrowser.open("https://github.com/INUGYN/Detectruite/archive/refs/heads/main.zip")
             exit()
 
         # Fonction appelée lorsque le bouton Ignorer est cliqué
