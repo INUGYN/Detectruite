@@ -229,7 +229,7 @@ while True:
     mask = cv2.inRange(hsv, lower, upper)
     result = cv2.bitwise_and(frame, frame, mask=mask)
 
-    cv2.putText(result, "Appuyez sur 'Échap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+    cv2.putText(result, "Appuyez sur 'Echap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
     # show thresholded image
     cv2.imshow("Mask Bac Vert", mask)
@@ -270,7 +270,7 @@ while True:
     mask = cv2.inRange(hsv, lower, upper)
     result = cv2.bitwise_and(frame, frame, mask=mask)
 
-    cv2.putText(result, "Appuyez sur 'Échap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 0), 2)
+    cv2.putText(result, "Appuyez sur 'Echap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 0), 2)
 
     # show thresholded image
     cv2.imshow("Mask Bac Bleu", mask)
@@ -311,7 +311,7 @@ while True:
     mask = cv2.inRange(hsv, lower, upper)
     result = cv2.bitwise_and(frame, frame, mask=mask)
 
-    cv2.putText(result, "Appuyez sur 'Échap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
+    cv2.putText(result, "Appuyez sur 'Echap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
 
     # show thresholded image
     cv2.imshow("Mask Bac Jaune", mask)
@@ -352,7 +352,7 @@ while True:
     mask = cv2.inRange(hsv, lower, upper)
     result = cv2.bitwise_and(frame, frame, mask=mask)
 
-    cv2.putText(result, "Appuyez sur 'Échap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 70, 140), 2)
+    cv2.putText(result, "Appuyez sur 'Echap' pour valider", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 70, 140), 2)
 
     # show thresholded image
     cv2.imshow("Mask Poisson", mask)
