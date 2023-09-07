@@ -1,5 +1,6 @@
 ###IMPORTATIONS DES PACKAGES
 import os
+import sys
 import cv2
 import time
 import math
@@ -15,7 +16,7 @@ from tkinter import ttk, filedialog
 ########
 
 # Version actuellement installée
-version_installee = "1.6.2"  # Remplacez par la version installée sur votre système
+version_installee = "1.6.3"  # Remplacez par la version installée sur votre système
 
 #Création d'une variable redirigeant vers le répertoire
 repertoire = os.path.dirname(os.path.abspath(__file__))
@@ -160,16 +161,16 @@ style.configure("TButton",
 frame = ttk.Frame(window1)
 
 #Chargement de l'image pour le background (style)
-background_but = Image.open(f"{repertoire}/image/R.jpg")
+background_but = Image.open(f"{repertoire}/image/button.jpg")
 background_but = background_but.resize((150, 100))
 background_button = ImageTk.PhotoImage(background_but)
 
 #Widget pour afficher l'image en background
 background_label = ttk.Label(frame, image=background_button)
-background_label.place(x=0, y=0, relwidth=1, relheight=1.5, anchor="nw", rely=-0.35)
+background_label.place(x=0, y=-20, relwidth=1, relheight=1.5, anchor="nw", rely=-0.35)
 
 #Titre
-title_label = ttk.Label(frame, text="Détéctruite", font=("Arial", 16))
+title_label = ttk.Label(frame, text="Détectruite", font=("Arial", 16))
 title_label.grid(row=0, column=0, columnspan=3, pady=(50, 10))
 
 #Création des boutons
@@ -187,14 +188,14 @@ label = tk.Label(window1, text="v" + version_installee)
 # Positionnement en bas à gauche en utilisant la méthode pack
 label.pack(anchor='sw', padx=10, pady=10)
 #Changer le titre de la fenêtre
-window1.title("Détéctruite")
+window1.title("Détectruite")
 window1.iconbitmap(f"{repertoire}/image/truite.ico")
 
 #Boucle principale de la fenêtre
 window1.mainloop()
 
 if path == "":
-    exit()
+    sys.exit()
 
 print("Chemin de la vidéo sélectionnée :", path)
 
@@ -445,7 +446,7 @@ def blue(img):
         prev_time_blue = time.time()
 
         #cv2.imshow('Poisson Bleu', image2)
-        # cv2.imshow('Bac bleu', mask2)
+        #cv2.imshow('Bac bleu', mask2)
 
 
 # Détection et traitement du vert
@@ -517,7 +518,7 @@ def green(img):
         prev_time_green = time.time()
 
         #cv2.imshow('Poisson Vert', image2)
-        # cv2.imshow('Bac Vert', mask2)
+        #cv2.imshow('Bac Vert', mask2)
 
 
 # Détection et traitement du jaune
@@ -589,7 +590,7 @@ def yellow(img):
         prev_time_yellow = time.time()
 
         #cv2.imshow('Poisson Jaune', image2)
-        # cv2.imshow('Bac jaune', mask2)
+        #cv2.imshow('Bac jaune', mask2)
 
 
 # Listes pour stocker les vitesses des poissons de chaque bac
