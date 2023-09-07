@@ -2,7 +2,7 @@
 
 set "repertoire=%~dp0"
 
-cd %repertoire%/code detecte/dependance
+pushd "%repertoire%/code detecte/dependance"
 
 python -m pip install requests
 
@@ -10,13 +10,16 @@ pip install pyshortcuts
 
 pip install -r requirements.txt
 
-cd ..
-cd ..
+popd
+
+pushd "%repertoire%"
 
 python setup.py build
 
-cd %repertoire%/code detecte/dependance
+pushd "%repertoire%/code detecte/dependance"
 
 python message.py
+
+popd
 
 exit
