@@ -16,7 +16,7 @@ from tkinter import ttk, filedialog
 ########
 
 # Version actuellement installée
-version_installee = "1.6.3"  # Remplacez par la version installée sur votre système
+version_installee = "1.7.1"  # Remplacez par la version installée sur votre système
 
 #Création d'une variable redirigeant vers le répertoire
 repertoire = os.path.dirname(os.path.abspath(__file__))
@@ -124,14 +124,14 @@ windows = [window1]
 
 #Chargement de l'image pour le background (style)
 image = Image.open(f"{repertoire}/image/truite.png")
-image = image.resize((1024, 1024))
+image = image.resize((2000, 1200))
 background_image = ImageTk.PhotoImage(image)
 
 #Widget pour afficher l'image en background
 background_label = tk.Label(window1, image=background_image)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-window1.geometry("1024x720") #Taille de fenêtre largeurxlongueur
+window1.geometry("2000x1200") #Taille de fenêtre largeurxlongueur
 
 #Obtention des dimensions d'écran
 screen_width = window1.winfo_screenwidth()
