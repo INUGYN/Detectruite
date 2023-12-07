@@ -1,5 +1,4 @@
 @echo off
-:Start
 rem Vérification de l'installation de Python avec Chocolatey
 
 rem Vérifier si Chocolatey est installé
@@ -9,10 +8,10 @@ if %errorlevel% neq 0 (
     @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
     if %errorlevel% neq 0 (
         echo L'installation de Chocolatey a échoué. Veuillez installer Chocolatey manuellement et réessayez.
-        goto :Start
+        exit
     )
     echo Chocolatey a été installé avec succès.
-    goto :Start
+    goto :2
 ) else (
     echo Chocolatey est déjà installé.
     goto :2
@@ -25,10 +24,10 @@ if %errorlevel% neq 0 (
     choco install python311 -y
     if %errorlevel% neq 0 (
         echo L'installation de Python a échoué. Veuillez installer Python manuellement et réessayez.
-        goto :Start
+        goto :3
     ) else (
         echo Python a été installé avec succès.
-        goto :Start
+        goto :3
     )
 ) else (
     echo Python est déjà installé.
@@ -66,4 +65,6 @@ python message.py
 
 popd
 
-exit
+cls
+
+echo installation terminer, vous pouvez fermer cette fenêtre.

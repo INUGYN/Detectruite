@@ -160,19 +160,6 @@ style.configure("TButton",
 #Cadre pour contenir les boutons
 frame = ttk.Frame(window1)
 
-#Chargement de l'image pour le background (style)
-background_but = Image.open(f"{repertoire}/image/button.jpg")
-background_but = background_but.resize((150, 100))
-background_button = ImageTk.PhotoImage(background_but)
-
-#Widget pour afficher l'image en background
-background_label = ttk.Label(frame, image=background_button)
-background_label.place(x=0, y=-20, relwidth=1, relheight=1.5, anchor="nw", rely=-0.35)
-
-#Titre
-title_label = ttk.Label(frame, text="Détectruite", font=("Arial", 16))
-title_label.grid(row=0, column=0, columnspan=3, pady=(50, 10))
-
 #Création des boutons
 button1 = ttk.Button(frame, text="Vidéo", command=on_button1_click)
 
