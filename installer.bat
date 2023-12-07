@@ -1,4 +1,9 @@
 @echo off
+
+echo fermer le logiciel si vous etes en train d'effectuer une mise a jour...
+echo -------
+echo une foit la fenetre fermer cliquez sur entrer&pause>nul
+
 rem Vérification de l'installation de Python avec Chocolatey
 
 rem Vérifier si Chocolatey est installé
