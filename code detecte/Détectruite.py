@@ -16,12 +16,12 @@ from tkinter import ttk, filedialog
 ########
 
 # Version actuellement installée
-version_installee = "1.7.2"  # Remplacez par la version installée sur votre système
+version_installee = "1.7.3"  # Remplacez par la version installée sur votre système
 
 #Création d'une variable redirigeant vers le répertoire
 repertoire = os.path.dirname(os.path.abspath(__file__))
 repertoire = os.path.normpath(repertoire)
-
+maj_activate = "non"
 def maj_test():
     # URL de votre référentiel GitHub
     github_repo_api = 'https://api.github.com/repos/INUGYN/Detectruite'
@@ -36,6 +36,7 @@ def maj_test():
             # Fonction appelée lorsque le bouton de mise à jour est cliqué
             def update_button_click():
                 webbrowser.open("https://github.com/INUGYN/Detectruite/archive/refs/heads/main.zip")
+                maj_activate = "oui"
                 exit()
 
             # Fonction appelée lorsque le bouton Ignorer est cliqué
@@ -118,6 +119,9 @@ def on_button1_click():
 
 #Création des fenêtres
 window1 = tk.Tk()
+
+if maj_activate == "oui":
+    exit()
 
 #Ajoute la fenêtre à la liste
 windows = [window1]

@@ -64,7 +64,3 @@ pushd "%repertoire%/code detecte/dependance"
 python message.py
 
 popd
-
-cls
-
-echo installation terminer, vous pouvez fermer cette fenêtre.
