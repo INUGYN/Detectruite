@@ -16,7 +16,7 @@ from tkinter import ttk, filedialog
 ########
 
 # Version actuellement installée
-version_installee = "1.7.1"  # Remplacez par la version installée sur votre système
+version_installee = "1.7.2"  # Remplacez par la version installée sur votre système
 
 #Création d'une variable redirigeant vers le répertoire
 repertoire = os.path.dirname(os.path.abspath(__file__))
